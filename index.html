@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Racing Game</title>
+  <style>
+    body { margin: 0; padding: 0; overflow: hidden; }
+    canvas { display: block; background: #000; }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <script>
+    // Set up the canvas
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Define game variables
+    const playerWidth = 50;
+    const playerHeight = 100;
+    let playerX = canvas.width / 2 - playerWidth / 2;
+    let playerY = canvas.height - playerHeight - 20;
+    let playerSpeed = 5;
+    let keys = {};
+
+    // Handle keyboard input
+    window.addEventListener('keydown', (e) => {
+      keys[e.code] = true;
+    });
+
+    window.addEventListener('keyup', (e) => {
+      keys[e.code] = false;
+    });
+
+    // Update game state
+    function update() {
+      if (keys['ArrowLeft'] && playerX > 0) {
+        playerX -= playerSpeed; // Move left
+      }
+      if (keys['ArrowRight'] && playerX < canvas.width - playerWidth) {
+        playerX += playerSpeed; // Move right
+      }
+
+      // Simulate moving obstacles (for simplicity, let's just draw a random road line)
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the screen
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(playerX, playerY, playerWidth, playerHeight); // Draw player car
+
+      // Example of a moving obstacle (just a basic road line)
+      ctx.fillStyle = '#777';
+      ctx.fillRect(canvas.width / 2 - 5, 0, 10, canvas.height); // Middle line of road
+
+      // Call game loop again
+      requestAnimationFrame(update);
+    }
+
+    // Start the game loop
+    update();
+  </script>
+</body>
+</html>
